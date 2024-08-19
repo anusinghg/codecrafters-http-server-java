@@ -23,7 +23,7 @@ public class Main {
        PrintWriter  out = new PrintWriter(clientSocket.getOutputStream(), true);
        BufferedReader  in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-       out.println("HTTP/1.1 200 OK\\r\\n\\r");
+       out.println("HTTP/1.1 200 OK\r\n\r");
 
 
          System.out.println("accepted new connection");
