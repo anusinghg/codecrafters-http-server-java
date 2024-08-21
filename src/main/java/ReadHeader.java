@@ -41,8 +41,8 @@ public class ReadHeader {
 //            System.out.println(lines[1]);
 
             if(lines[1].equals("/user-agent")) {
-                String outputUserAgent = userAgent.split(" ")[0];
-                String returnString  =MessageFormat.format(response.get("echo"), outputUserAgent.length()-1, outputUserAgent);
+                String outputUserAgent = userAgent.split(" ")[1];
+                String returnString  =MessageFormat.format(response.get("echo"), outputUserAgent.length(), outputUserAgent);
                 System.out.println(returnString);
                 clientSocket.getOutputStream().write(returnString.getBytes());
             }
