@@ -40,7 +40,22 @@ public class ReadHeader {
             String[] lines = input.split(" ");
 //            System.out.println(lines[1]);
 
-            if(lines[1].equals("/user-agent")) {
+            if(lines[1].equals("/")){
+                clientSocket.getOutputStream().write(response.get("ok").getBytes());
+            }
+            else if(lines[1].matches("^/echo/.*$")) {
+//                System.out.println("inside");
+
+                String[] path = lines[1].split("/");
+//                System.out.println(path[0]+" | "+path[1]+" | "+path[2]);
+                if((path.length==3) && (path[1].equals("echo"))) {
+                    String pathInput = path[2];
+                    String output = MessageFormat.format(response.get("echo"),pathInput.length(), pathInput);
+//                    System.out.println(output);
+                    clientSocket.getOutputStream().write(output.getBytes());
+                }
+            }
+            else if(lines[1].equals("/user-agent")) {
                 String outputUserAgent = userAgent.split(" ")[1];
                 String returnString  =MessageFormat.format(response.get("echo"), outputUserAgent.length(), outputUserAgent);
                 System.out.println(returnString);
@@ -49,6 +64,7 @@ public class ReadHeader {
             else {
                 clientSocket.getOutputStream().write(response.get("notFound").getBytes());
             }
+
             out.flush();
 
             System.out.println("accepted new connection");
