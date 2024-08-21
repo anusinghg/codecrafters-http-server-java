@@ -4,65 +4,13 @@ import java.net.Socket;
 import java.util.List;
 
 public class Main {
-//  public static void main(String[] args) {
-////    ExtractURLPath.main(args);
-//    RespondWithBody.main(args);
-//  }
-
   public static void main(String[] args) {
-    // You can use print statements as follows for debugging, they'll be visible
-    // when running tests.
-    System.out.println("Logs from your program will appear here!");
-    // Uncomment this block to pass the first stage
-    ServerSocket serverSocket = null;
-    Socket clientSocket = null;
-    try {
-      serverSocket = new ServerSocket(4221);
-      serverSocket.setReuseAddress(true);
-      clientSocket = serverSocket.accept(); // Wait for connection from client.
-      InputStream input = clientSocket.getInputStream();
-      BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-      String line = reader.readLine();
-      String[] HttpRequest = line.split(" ");
-      for(String string: HttpRequest) {
-        System.out.println(string);
-      }
-      OutputStream output = clientSocket.getOutputStream();
-      String[] str = HttpRequest[1].split("/");
-      reader.readLine();
-      reader.readLine();
-      String useragent = reader.readLine().split("\\s+")[1];
-      System.out.println(useragent);
-//      // System.out.println(HttpRequest[1]);
-//      if (HttpRequest[1].equals("/")) {
-//        System.out.println("version");
-//        String response = "HTTP/1.1 200 OK\r\n"
-//                + "Content-Type: text/plain\r\n"
-//                + "Content-Length: 0\r\n\r\n";
-//        output.write(response.getBytes());
-//      } else if (str[1].equals("user-agent")) {
-//        reader.readLine();
-//        String useragent = reader.readLine().split("\\s+")[1];
-//        String reply = String.format(
-//                "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %s\r\n\r\n%s\r\n",
-//                useragent.length(), useragent);
-//        output.write(reply.getBytes());
-//      } else if ((str.length > 2 && str[1].equals("echo"))) {
-//        String responsebody = str[2];
-//        String finalstr = "HTTP/1.1 200 OK\r\n"
-//                + "Content-Type: text/plain\r\n"
-//                + "Content-Length: " + responsebody.length() +
-//                "\r\n\r\n" + responsebody;
-//        output.write(finalstr.getBytes());
-//      } else {
-//        output.write("HTTP/1.1 404 Not Found\r\n\r\n".getBytes());
-//      }
-//      output.flush();
-      System.out.println("accepted new connection");
-    } catch (IOException e) {
-      System.out.println("IOException: " + e.getMessage());
-    }
+//    ExtractURLPath.main(args);
+//    RespondWithBody.main(args);
+    ReadHeader.main(args);
   }
+
+
 
 
 }
