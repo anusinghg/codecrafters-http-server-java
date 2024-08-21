@@ -34,7 +34,7 @@ public class ReadHeader {
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String input = in.readLine();
             in.readLine();
-            in.readLine();
+
             String userAgent = in.readLine();
 
             String[] lines = input.split(" ");
