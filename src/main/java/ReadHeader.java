@@ -38,11 +38,13 @@ public class ReadHeader {
             String userAgent = in.readLine();
 
             String[] lines = input.split(" ");
-            System.out.println(lines[1]);
+//            System.out.println(lines[1]);
 
             if(lines[1].equals("/user-agent")) {
                 String outputUserAgent = userAgent.split(" ")[1];
-                clientSocket.getOutputStream().write(MessageFormat.format(response.get("echo"), outputUserAgent.length(), outputUserAgent).getBytes());
+                String returnString  =MessageFormat.format(response.get("echo"), outputUserAgent.length(), outputUserAgent);
+                System.out.println(returnString);
+                clientSocket.getOutputStream().write(returnString.getBytes());
             }
             else {
                 clientSocket.getOutputStream().write(response.get("notFound").getBytes());
