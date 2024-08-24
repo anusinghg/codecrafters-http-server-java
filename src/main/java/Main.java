@@ -1,6 +1,7 @@
 import ConcurrentConnections.Server;
 import common.CommandLineUtil;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.ParseException;
 
 import java.io.*;
@@ -14,7 +15,11 @@ public class Main {
 //    RespondWithBody.main(args);
 //    ReadHeader.main(args);
     try {
-      CommandLine commandLine = CommandLineUtil.getCommandLine(args);
+      Option directoryPath = new Option("d", "directory", true, "Number of lines");
+      Option[] options = new Option[]{directoryPath};
+
+      CommandLine commandLine = CommandLineUtil.getCommandLine(options, args);
+
       new Server(4221, commandLine).start();
     } catch (IOException | ParseException e) {
       throw new RuntimeException(e);
