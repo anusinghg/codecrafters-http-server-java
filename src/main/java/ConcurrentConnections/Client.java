@@ -41,6 +41,9 @@ public class Client implements Runnable{
             }
             else if(lines[1].matches("^/files/.*$")) {
                 String[] path = lines[1].split("/");
+                System.out.println(path[0]);
+                System.out.println(path[1]);
+                System.out.println(path[2]);
                 String fileName = path[2];
                 try {
                     FileReaderUtil fileReaderUtil = new FileReaderUtil(fileName);
@@ -48,6 +51,7 @@ public class Client implements Runnable{
                     String output = MessageFormat.format(response.get("echo"),fileContent.length(), fileContent);
                     this.clientSocket.getOutputStream().write(output.getBytes());
                 }catch (IOException e) {
+                    System.out.println(e.getStackTrace());
                     this.clientSocket.getOutputStream().write(response.get("notFound").getBytes());
                 }
             }
