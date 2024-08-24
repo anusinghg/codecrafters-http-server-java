@@ -42,7 +42,11 @@ public class Client implements Runnable{
 
             String userAgent = in.readLine();
 
+            System.out.println("input"+ input);
+            System.out.println("userAgent"+ userAgent);
+
             String[] lines = input.split(" ");
+            System.out.println(lines[0]);
             if(lines[1].equals("/")){
                 this.clientSocket.getOutputStream().write(response.get("ok").getBytes());
             }
