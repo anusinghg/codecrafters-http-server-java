@@ -71,22 +71,29 @@ public class Client implements Runnable{
                     }
                 }
                 else if(lines[0].equals("POST")) {
-                    in.readLine();
-                    in.readLine();
-                    System.out.println("hi in");
-                    String[] path = lines[1].split("/");
-                    String fileName = path[2];
-                    String content = in.readLine();
-                    System.out.println("hi out");
-                    String filePath = commandLine.getArgList().get(0) + fileName;
-                    System.out.println(filePath);
-                    FileReaderUtil fileReaderUtil = new FileReaderUtil(filePath);
-                    fileReaderUtil.writeStringToFileAndCreateDirectory(content);
-                    System.out.println("checking");
-                    FileReaderUtil fileReaderUtilCheck = new FileReaderUtil(filePath);
-                    String fileContent = fileReaderUtilCheck.readFileAsString();
-                    System.out.println(fileContent);
-                    this.clientSocket.getOutputStream().write(response.get("fileCreated").getBytes());
+
+                    try {
+                        in.readLine();
+                        in.readLine();
+                        System.out.println("hi in");
+                        String[] path = lines[1].split("/");
+                        String fileName = path[2];
+                        String content = in.readLine();
+                        System.out.println("hi out");
+                        String filePath = commandLine.getArgList().get(0) + fileName;
+                        System.out.println(filePath);
+                        FileReaderUtil fileReaderUtil = new FileReaderUtil(filePath);
+                        fileReaderUtil.writeStringToFileAndCreateDirectory(content);
+                        System.out.println("checking");
+                        FileReaderUtil fileReaderUtilCheck = new FileReaderUtil(filePath);
+                        String fileContent = fileReaderUtilCheck.readFileAsString();
+                        System.out.println(fileContent);
+                        this.clientSocket.getOutputStream().write(response.get("fileCreated").getBytes());
+                    }catch (IOException e){
+                        this.clientSocket.getOutputStream().write(response.get("notFound").getBytes());
+                        e.printStackTrace();
+                    }
+
                 }
 
             }
@@ -113,7 +120,9 @@ public class Client implements Runnable{
             }
 
             out.flush();
+            out.close();
         } catch (IOException e) {
+
             throw new RuntimeException(e);
         }
 
