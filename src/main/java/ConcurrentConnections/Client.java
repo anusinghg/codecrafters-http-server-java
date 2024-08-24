@@ -58,7 +58,7 @@ public class Client implements Runnable{
                     String output = MessageFormat.format(response.get("echo"),fileContent.length(), fileContent);
                     this.clientSocket.getOutputStream().write(output.getBytes());
                 }catch (IOException e) {
-                    System.out.println(e.getStackTrace());
+                    e.printStackTrace();
                     this.clientSocket.getOutputStream().write(response.get("notFound").getBytes());
                 }
             }
