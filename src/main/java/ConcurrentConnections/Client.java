@@ -51,8 +51,8 @@ public class Client implements Runnable{
                 String fileName = path[2];
                 try {
                     System.out.println(commandLine.getArgList().size());
-//                    String filePath = commandLine.getArgList().get(0) + fileName;
-//                    System.out.println(filePath);
+                    String filePath = commandLine.getArgList().get(0) + fileName;
+                    System.out.println(filePath);
                     FileReaderUtil fileReaderUtil = new FileReaderUtil(fileName);
                     String fileContent = fileReaderUtil.readFileAsString();
                     String output = MessageFormat.format(response.get("echo"),fileContent.length(), fileContent);

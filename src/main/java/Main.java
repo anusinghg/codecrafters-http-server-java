@@ -15,10 +15,17 @@ public class Main {
 //    RespondWithBody.main(args);
 //    ReadHeader.main(args);
     try {
-      Option directoryPath = new Option("d", "directory", true, "Number of lines");
+      for(String arg: args) {
+        System.out.println(arg);
+      }
+      Option directoryPath = new Option("d", "directory", false, "Base directory path.");
       Option[] options = new Option[]{directoryPath};
 
       CommandLine commandLine = CommandLineUtil.getCommandLine(options, args);
+      System.out.println("hi");
+      for(String arg: commandLine.getArgs()) {
+        System.out.println(arg);
+      }
 
       new Server(4221, commandLine).start();
     } catch (IOException | ParseException e) {
