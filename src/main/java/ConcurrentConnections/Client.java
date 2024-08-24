@@ -75,7 +75,8 @@ public class Client implements Runnable{
                     String filePath = commandLine.getArgList().get(0) + fileName;
                     System.out.println(filePath);
                     FileReaderUtil fileReaderUtil = new FileReaderUtil(filePath);
-                    System.out.println(content);
+                    fileReaderUtil.writeStringToFile(content);
+//                    System.out.println(content);
                     this.clientSocket.getOutputStream().write(response.get("fileCreated").getBytes());
                 }
 

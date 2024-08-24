@@ -1,6 +1,7 @@
 package common;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,13 +55,25 @@ public class FileReaderUtil {
     /**
      * Reads the content of the file as a Stream.
      *
-     * @return the number of words in the file
+     * @return the stream of string
      * @throws IOException if an I/O error occurs reading from the file
      */
     public Stream<String> readFileAsStream() throws IOException {
         return Files.lines(this.path);
 
     }
+
+    /**
+     * Writes the given string to the path.
+     *
+     * @return Path object of the file
+     * @throws IOException if an I/O error occurs writing to the file
+     */
+    public Path writeStringToFile(String fileContent) throws IOException {
+        return Files.write(this.path, fileContent.getBytes(StandardCharsets.UTF_8));
+
+    }
+
 
     /**
      * Gets the size of the file in bytes.
