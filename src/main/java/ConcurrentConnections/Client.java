@@ -1,6 +1,7 @@
 package ConcurrentConnections;
 
 import common.FileReaderUtil;
+import org.apache.commons.cli.CommandLine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,9 +18,12 @@ public class Client implements Runnable{
 
     private PrintWriter out;
     private BufferedReader in;
+
+    private CommandLine commandLine;
     
-    public Client(Socket clientSocket){
+    public Client(Socket clientSocket, CommandLine commandLine){
         this.clientSocket = clientSocket;
+        this.commandLine = commandLine;
     }
 
     @Override
@@ -46,6 +50,8 @@ public class Client implements Runnable{
                 System.out.println(path[2]);
                 String fileName = path[2];
                 try {
+                    String filePath = commandLine.getArgList().get(0) + fileName;
+                    System.out.println(filePath);
                     FileReaderUtil fileReaderUtil = new FileReaderUtil(fileName);
                     String fileContent = fileReaderUtil.readFileAsString();
                     String output = MessageFormat.format(response.get("echo"),fileContent.length(), fileContent);

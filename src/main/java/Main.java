@@ -1,4 +1,7 @@
 import ConcurrentConnections.Server;
+import common.CommandLineUtil;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.ParseException;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -11,11 +14,9 @@ public class Main {
 //    RespondWithBody.main(args);
 //    ReadHeader.main(args);
     try {
-      for(String arg: args) {
-        System.out.println(arg);
-      }
-      new Server(4221).start();
-    } catch (IOException e) {
+      CommandLine commandLine = CommandLineUtil.getCommandLine(args);
+      new Server(4221, commandLine).start();
+    } catch (IOException | ParseException e) {
       throw new RuntimeException(e);
     }
   }
