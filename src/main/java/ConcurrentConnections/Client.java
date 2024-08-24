@@ -38,10 +38,10 @@ public class Client implements Runnable{
             PrintWriter out = new PrintWriter(this.clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
             String input = in.readLine();
-            System.out.println(in.readLine());
+            in.readLine();
 
             String userAgent = in.readLine();
-            System.out.println(userAgent);
+
             String[] lines = input.split(" ");
             if(lines[1].equals("/")){
                 this.clientSocket.getOutputStream().write(response.get("ok").getBytes());
@@ -67,12 +67,8 @@ public class Client implements Runnable{
                     }
                 }
                 else if(lines[0].equals("POST")) {
-                    System.out.println(in.readLine());
-                    System.out.println(in.readLine());
-                    System.out.println(in.readLine());
-//                    in.readLine();
-//                    in.readLine();
-//                    in.readLine();
+                    in.readLine();
+                    in.readLine();
                     String[] path = lines[1].split("/");
                     String fileName = path[2];
                     String content = in.readLine();
