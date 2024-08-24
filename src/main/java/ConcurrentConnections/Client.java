@@ -33,7 +33,7 @@ public class Client implements Runnable{
         response.put("notFound", "HTTP/1.1 404 Not Found\r\n\r\n");
         response.put("echo", "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {0}\r\n\r\n{1}");
         response.put("fileContent", "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {0}\r\n\r\n{1}");
-        response.put("fileCreated", "HTTP/1.1 200 Created\r\n\r\n");
+        response.put("fileCreated", "HTTP/1.1 201 Created\r\n\r\n");
         try {
             PrintWriter out = new PrintWriter(this.clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
