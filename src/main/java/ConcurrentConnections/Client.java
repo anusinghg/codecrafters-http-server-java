@@ -33,6 +33,7 @@ public class Client implements Runnable{
         response.put("notFound", "HTTP/1.1 404 Not Found\r\n\r\n");
         response.put("echo", "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {0}\r\n\r\n{1}");
         response.put("fileContent", "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {0}\r\n\r\n{1}");
+        response.put("fileCreated", "HTTP/1.1 200 Created\r\n\r\n");
         try {
             PrintWriter out = new PrintWriter(this.clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
@@ -45,23 +46,39 @@ public class Client implements Runnable{
                 this.clientSocket.getOutputStream().write(response.get("ok").getBytes());
             }
             else if(lines[1].matches("^/files/.*$")) {
-                String[] path = lines[1].split("/");
-                System.out.println(path[0]);
-                System.out.println(path[1]);
-                System.out.println(path[2]);
-                String fileName = path[2];
-                try {
-                    System.out.println(commandLine.getArgList().size());
+                if(lines[0].equals("GET")) {
+                    String[] path = lines[1].split("/");
+                    System.out.println(path[0]);
+                    System.out.println(path[1]);
+                    System.out.println(path[2]);
+                    String fileName = path[2];
+                    try {
+                        System.out.println(commandLine.getArgList().size());
+                        String filePath = commandLine.getArgList().get(0) + fileName;
+                        System.out.println(filePath);
+                        FileReaderUtil fileReaderUtil = new FileReaderUtil(filePath);
+                        String fileContent = fileReaderUtil.readFileAsString();
+                        String output = MessageFormat.format(response.get("fileContent"),fileContent.length(), fileContent);
+                        this.clientSocket.getOutputStream().write(output.getBytes());
+                    }catch (IOException e) {
+                        e.printStackTrace();
+                        this.clientSocket.getOutputStream().write(response.get("notFound").getBytes());
+                    }
+                }
+                else if(lines[0].equals("POST")) {
+                    in.readLine();
+                    in.readLine();
+                    in.readLine();
+                    String[] path = lines[1].split("/");
+                    String fileName = path[2];
+                    String content = in.readLine();
                     String filePath = commandLine.getArgList().get(0) + fileName;
                     System.out.println(filePath);
                     FileReaderUtil fileReaderUtil = new FileReaderUtil(filePath);
-                    String fileContent = fileReaderUtil.readFileAsString();
-                    String output = MessageFormat.format(response.get("fileContent"),fileContent.length(), fileContent);
-                    this.clientSocket.getOutputStream().write(output.getBytes());
-                }catch (IOException e) {
-                    e.printStackTrace();
-                    this.clientSocket.getOutputStream().write(response.get("notFound").getBytes());
+                    System.out.println(content);
+                    this.clientSocket.getOutputStream().write(response.get("fileCreated").getBytes());
                 }
+
             }
             else if(lines[1].matches("^/echo/.*$")) {
 //                System.out.println("inside");
