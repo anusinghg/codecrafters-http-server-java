@@ -73,9 +73,11 @@ public class Client implements Runnable{
                 else if(lines[0].equals("POST")) {
                     in.readLine();
                     in.readLine();
+                    System.out.println("hi in");
                     String[] path = lines[1].split("/");
                     String fileName = path[2];
                     String content = in.readLine();
+                    System.out.println("hi out");
                     String filePath = commandLine.getArgList().get(0) + fileName;
                     System.out.println(filePath);
                     FileReaderUtil fileReaderUtil = new FileReaderUtil(filePath);
