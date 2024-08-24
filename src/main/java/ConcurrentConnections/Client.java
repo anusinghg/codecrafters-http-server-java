@@ -1,5 +1,7 @@
 package ConcurrentConnections;
 
+import common.FileReaderUtil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,6 +38,18 @@ public class Client implements Runnable{
             String[] lines = input.split(" ");
             if(lines[1].equals("/")){
                 this.clientSocket.getOutputStream().write(response.get("ok").getBytes());
+            }
+            else if(lines[1].matches("^/files/.*$")) {
+                String[] path = lines[1].split("/");
+                String fileName = path[2];
+                try {
+                    FileReaderUtil fileReaderUtil = new FileReaderUtil(fileName);
+                    String fileContent = fileReaderUtil.readFileAsString();
+                    String output = MessageFormat.format(response.get("echo"),fileContent.length(), fileContent);
+                    this.clientSocket.getOutputStream().write(output.getBytes());
+                }catch (IOException e) {
+                    this.clientSocket.getOutputStream().write(response.get("notFound").getBytes());
+                }
             }
             else if(lines[1].matches("^/echo/.*$")) {
 //                System.out.println("inside");
