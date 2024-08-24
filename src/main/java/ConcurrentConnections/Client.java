@@ -32,6 +32,7 @@ public class Client implements Runnable{
         response.put("ok", "HTTP/1.1 200 OK\r\n\r\n");
         response.put("notFound", "HTTP/1.1 404 Not Found\r\n\r\n");
         response.put("echo", "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {0}\r\n\r\n{1}");
+        response.put("fileContent", "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {0}\r\n\r\n{1}");
         try {
             PrintWriter out = new PrintWriter(this.clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
@@ -53,9 +54,9 @@ public class Client implements Runnable{
                     System.out.println(commandLine.getArgList().size());
                     String filePath = commandLine.getArgList().get(0) + fileName;
                     System.out.println(filePath);
-                    FileReaderUtil fileReaderUtil = new FileReaderUtil(fileName);
+                    FileReaderUtil fileReaderUtil = new FileReaderUtil(filePath);
                     String fileContent = fileReaderUtil.readFileAsString();
-                    String output = MessageFormat.format(response.get("echo"),fileContent.length(), fileContent);
+                    String output = MessageFormat.format(response.get("fileContent"),fileContent.length(), fileContent);
                     this.clientSocket.getOutputStream().write(output.getBytes());
                 }catch (IOException e) {
                     e.printStackTrace();
