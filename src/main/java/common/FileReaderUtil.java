@@ -71,7 +71,19 @@ public class FileReaderUtil {
      */
     public Path writeStringToFile(String fileContent) throws IOException {
         return Files.write(this.path, fileContent.getBytes(StandardCharsets.UTF_8));
+    }
 
+
+    /**
+     * Creates the directories of the path
+     * Writes the given string to the path.
+     *
+     * @return Path object of the file
+     * @throws IOException if an I/O error occurs writing to the file
+     */
+    public Path writeStringToFileAndCreateDirectory(String fileContent) throws IOException {
+        Files.createDirectories(this.path.getParent());
+        return Files.write(this.path, fileContent.getBytes(StandardCharsets.UTF_8));
     }
 
 
