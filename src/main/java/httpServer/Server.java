@@ -31,7 +31,7 @@ public class Server {
                 Socket clientSocket = this.serverSocket.accept();
                 System.out.println("New Client Connected! "+ clientSocket.getPort());
 //                new Thread(new Client(clientSocket, commandLine)).start(); // Put to a new thread.
-                new Client(clientSocket, commandLine);
+                new Client(clientSocket, commandLine).run();
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
