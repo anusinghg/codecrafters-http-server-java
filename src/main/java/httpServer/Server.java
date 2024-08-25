@@ -1,4 +1,4 @@
-package ConcurrentConnections;
+package httpServer;
 
 import org.apache.commons.cli.CommandLine;
 

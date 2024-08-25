@@ -1,6 +1,7 @@
-package ConcurrentConnections;
+package httpServer;
 
 import common.FileReaderUtil;
+import common.HttpResponse;
 import org.apache.commons.cli.CommandLine;
 
 import java.io.BufferedReader;
@@ -28,12 +29,12 @@ public class Client implements Runnable{
 
     @Override
     public void run() {
-        Map<String, String> response = new HashMap<>();
-        response.put("ok", "HTTP/1.1 200 OK\r\n\r\n");
-        response.put("notFound", "HTTP/1.1 404 Not Found\r\n\r\n");
-        response.put("echo", "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {0}\r\n\r\n{1}");
-        response.put("fileContent", "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {0}\r\n\r\n{1}");
-        response.put("fileCreated", "HTTP/1.1 201 Created\r\n\r\n");
+        Map<HttpResponse, String> response = new HashMap<>();
+        response.put(HttpResponse.OK, "HTTP/1.1 200 OK\r\n\r\n");
+        response.put(HttpResponse.NotFound, "HTTP/1.1 404 Not Found\r\n\r\n");
+        response.put(HttpResponse.OKPlainText, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {0}\r\n\r\n{1}");
+        response.put(HttpResponse.OKOctetStream, "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {0}\r\n\r\n{1}");
+        response.put(HttpResponse.Created, "HTTP/1.1 201 Created\r\n\r\n");
         try {
             PrintWriter out = new PrintWriter(this.clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
@@ -63,11 +64,11 @@ public class Client implements Runnable{
                         System.out.println(filePath);
                         FileReaderUtil fileReaderUtil = new FileReaderUtil(filePath);
                         String fileContent = fileReaderUtil.readFileAsString();
-                        String output = MessageFormat.format(response.get("fileContent"),fileContent.length(), fileContent);
+                        String output = MessageFormat.format(response.get(HttpResponse.OKOctetStream),fileContent.length(), fileContent);
                         this.clientSocket.getOutputStream().write(output.getBytes());
                     }catch (IOException e) {
                         e.printStackTrace();
-                        this.clientSocket.getOutputStream().write(response.get("notFound").getBytes());
+                        this.clientSocket.getOutputStream().write(response.get(HttpResponse.NotFound).getBytes());
                     }
                 }
                 else if(lines[0].equals("POST")) {
@@ -86,9 +87,9 @@ public class Client implements Runnable{
                         FileReaderUtil fileReaderUtilCheck = new FileReaderUtil(filePath);
                         String fileContent = fileReaderUtilCheck.readFileAsString();
                         System.out.println(fileContent);
-                        this.clientSocket.getOutputStream().write(response.get("fileCreated").getBytes());
+                        this.clientSocket.getOutputStream().write(response.get(HttpResponse.Created).getBytes());
                     }catch (IOException e){
-                        this.clientSocket.getOutputStream().write(response.get("notFound").getBytes());
+                        this.clientSocket.getOutputStream().write(response.get(HttpResponse.NotFound).getBytes());
                         e.printStackTrace();
                     }
 
@@ -102,23 +103,23 @@ public class Client implements Runnable{
 //                System.out.println(path[0]+" | "+path[1]+" | "+path[2]);
                 if((path.length==3) && (path[1].equals("echo"))) {
                     String pathInput = path[2];
-                    String output = MessageFormat.format(response.get("echo"),pathInput.length(), pathInput);
+                    String output = MessageFormat.format(response.get(HttpResponse.OKPlainText),pathInput.length(), pathInput);
 //                    System.out.println(output);
                     this.clientSocket.getOutputStream().write(output.getBytes());
                 }
             }
             else if(lines[1].equals("/user-agent")) {
                 String outputUserAgent = userAgent.split(" ")[1];
-                String returnString  =MessageFormat.format(response.get("echo"), outputUserAgent.length(), outputUserAgent);
+                String returnString  =MessageFormat.format(response.get(HttpResponse.OKPlainText), outputUserAgent.length(), outputUserAgent);
                 System.out.println(returnString);
                 this.clientSocket.getOutputStream().write(returnString.getBytes());
             }
             else {
-                this.clientSocket.getOutputStream().write(response.get("notFound").getBytes());
+                this.clientSocket.getOutputStream().write(response.get(HttpResponse.NotFound).getBytes());
             }
 
             out.flush();
-            out.close();
+//            out.close();
         } catch (IOException e) {
 
             throw new RuntimeException(e);
