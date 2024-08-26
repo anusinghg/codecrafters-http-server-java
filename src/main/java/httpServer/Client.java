@@ -78,11 +78,13 @@ public class Client implements Runnable{
                         in.readLine();
                         String[] path = lines[1].split("/");
                         String fileName = path[2];
-                        String content = in.readLine();
+                        String[] contentLength = userAgent.split(" ");
+                        char[] content = new char[Integer.parseInt(contentLength[1])];
+                        in.read(content, 0, Integer.parseInt(contentLength[1]));
                         String filePath = commandLine.getArgList().get(0) + fileName;
                         System.out.println(filePath);
                         FileReaderUtil fileReaderUtil = new FileReaderUtil(filePath);
-                        fileReaderUtil.writeStringToFileAndCreateDirectory(content);
+                        fileReaderUtil.writeStringToFileAndCreateDirectory(content.toString());
                         System.out.println("checking");
                         FileReaderUtil fileReaderUtilCheck = new FileReaderUtil(filePath);
                         String fileContent = fileReaderUtilCheck.readFileAsString();
