@@ -49,7 +49,7 @@ public class Client implements Runnable{
             String[] lines = input.split(" ");
             System.out.println(lines[0]);
             if(lines[1].equals("/")){
-                this.clientSocket.getOutputStream().write(response.get("ok").getBytes());
+                this.clientSocket.getOutputStream().write(response.get(HttpResponse.OK).getBytes());
             }
             else if(lines[1].matches("^/files/.*$")) {
                 if(lines[0].equals("GET")) {
