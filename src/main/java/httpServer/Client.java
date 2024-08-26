@@ -84,7 +84,7 @@ public class Client implements Runnable{
                         String filePath = commandLine.getArgList().get(0) + fileName;
                         System.out.println(filePath);
                         FileReaderUtil fileReaderUtil = new FileReaderUtil(filePath);
-                        fileReaderUtil.writeStringToFileAndCreateDirectory(content.toString());
+                        fileReaderUtil.writeStringToFileAndCreateDirectory(String.valueOf(content));
                         System.out.println("checking");
                         FileReaderUtil fileReaderUtilCheck = new FileReaderUtil(filePath);
                         String fileContent = fileReaderUtilCheck.readFileAsString();
